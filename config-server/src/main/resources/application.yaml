@@ -10,7 +10,7 @@ spring:
           search-paths:
             - "config"
           username: gladsondevop
-          password: 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
+          password: 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
 server:
   port: 8888
 
