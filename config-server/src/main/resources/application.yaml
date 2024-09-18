@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/gladsondevop/server-config
+          clone-on-start: true
+          search-paths:
+            - "config"
+          username: gladsondevop
+          password: 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
+server:
+  port: 8888
+

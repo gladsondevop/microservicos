@@ -31,10 +31,10 @@ public class PacienteController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
-        log.info("Buscando paciente por ID: ", id);
-        Optional<Paciente> optCerveja = pacienteService.findById(id);
-        if (optCerveja.isPresent()) {
-            return ResponseEntity.ok(optCerveja.get());
+        log.info("Buscando paciente por ID: {}", id);
+        Optional<Paciente> optPaciente = pacienteService.findById(id);
+        if (optPaciente.isPresent()) {
+            return ResponseEntity.ok(optPaciente.get());
         }else{
             return ResponseEntity.notFound().build();
         }

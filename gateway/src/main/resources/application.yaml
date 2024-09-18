@@ -10,6 +10,27 @@ spring:
             - Path=/consulta/**
           filters:
             - StripPrefix=1
+
+        - id: medico
+          uri: lb://MEDICO-SERVICE
+          predicates:
+            - Path=/medico/**
+          filters:
+            - StripPrefix=1
+
+        - id: paciente
+          uri: lb://PACIENTE-SERVICE
+          predicates:
+            - Path=/paciente/**
+          filters:
+            - StripPrefix=1
+
+        - id: notafiscal
+          uri: lb://NOTA-FISCAL-SERVICE
+          predicates:
+            - Path=/notafiscal/**
+          filters:
+            - StripPrefix=1
 server:
   port: 9999
 eureka:

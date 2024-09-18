@@ -1,14 +1,12 @@
 spring:
   application:
-    name: consulta-service
-  config:
-    import: optional:configserver:http://localhost:8888
+    name: nota-fiscal-service
   main:
     allow-bean-definition-overriding: true
   datasource:
-    url: jdbc:h2:mem:consulta
-    username: ${db.user}
-    password: ${db.password}
+    url: jdbc:h2:mem:notafiscal
+    username: sa
+    password: 123456
     driver-class-name: org.h2.Driver
   h2:
     console:

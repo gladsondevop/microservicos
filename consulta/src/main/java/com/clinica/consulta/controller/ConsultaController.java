@@ -5,6 +5,7 @@ import com.clinica.consulta.model.Medico;
 import com.clinica.consulta.model.Paciente;
 import com.clinica.consulta.service.ConsultaService;
 import com.clinica.consulta.service.MedicoService;
+import com.clinica.consulta.service.NotaFiscalService;
 import com.clinica.consulta.service.PacienteService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +29,7 @@ public class ConsultaController {
     private final ConsultaService consultaService;
     private final PacienteService pacienteService;
     private final MedicoService medicoService;
+    private final NotaFiscalService notaFiscalService;
 
     @GetMapping
     public ResponseEntity<List<Consulta>> getAll() {
@@ -36,16 +38,19 @@ public class ConsultaController {
 
     @PostMapping
     public ResponseEntity create(@RequestBody Consulta consulta) {
-        log.info("Buscando dados paciente: ", consulta.getIdPaciente());
+        log.info("Buscando dados paciente: {}", consulta.getIdPaciente());
         Paciente paciente = pacienteService.getById(consulta.getIdPaciente());
         consulta.setNomePaciente(paciente.getNome());
 
-        log.info("Buscando dados medico: ", consulta.getIdMedico());
+        log.info("Buscando dados medico: {}", consulta.getIdMedico());
         Medico medico = medicoService.getById(consulta.getIdMedico());
         consulta.setNomeMedico(medico.getNome());
 
-        log.info("Salvando consulta: ", consulta);
+        log.info("Salvando consulta: {}", consulta);
         Consulta saved = consultaService.salvar(consulta);
+
+        notaFiscalService.emitit(saved.getId());
+
         return ResponseEntity.ok(Map.of("consulta", saved));
     }
 }

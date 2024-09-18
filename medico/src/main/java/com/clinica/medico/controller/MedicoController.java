@@ -28,7 +28,7 @@ public class MedicoController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id) {
-        log.info("Buscando medico por ID: ", id);
+        log.info("Buscando medico por ID: {}", id);
         Optional<Medico> optional = medicoService.getById(id);
         if (optional.isPresent()) {
             return ResponseEntity.ok(optional.get());
