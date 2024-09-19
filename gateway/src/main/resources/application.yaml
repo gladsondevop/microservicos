@@ -10,6 +10,9 @@ spring:
             - Path=/consulta/**
           filters:
             - StripPrefix=1
+            - name: UserAuthentication
+              args:
+                headerName: Authorization
 
         - id: medico
           uri: lb://MEDICO-SERVICE
