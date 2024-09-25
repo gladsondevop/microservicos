@@ -1,12 +1,10 @@
 spring:
-  profiles:
-    active: docker
   application:
-    name: medico-service
+    name: paciente-service
   main:
     allow-bean-definition-overriding: true
   datasource:
-    url: jdbc:h2:mem:medico
+    url: jdbc:h2:mem:paciente
     username: sa
     password: 123456
     driver-class-name: org.h2.Driver
@@ -17,13 +15,13 @@ spring:
     show-sql: false
     database-platform: org.hibernate.dialect.H2Dialect
     defer-datasource-initialization: true
-app:
-  myport: ${PORT:0}
+
 server:
-  port: ${app.myport}
+  port: 8080
+
 eureka:
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://EUREKA-SERVER:8761/eureka

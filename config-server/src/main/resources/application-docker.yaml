@@ -1,6 +1,4 @@
 spring:
-  profiles:
-    active: docker
   application:
     name: config-server
   cloud:
@@ -12,7 +10,7 @@ spring:
           search-paths:
             - "config"
           username: gladsondevop
-          password: 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
+          password: ${GITHUB_CONFIG_PASSWORD}
 server:
   port: 8888
 

@@ -1,0 +1,85 @@
+version: '3.0'
+networks:
+  rede-pos:
+    driver: bridge
+services:
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    container_name: RABBITMQ
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - ./conf/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+      - ./conf/definitions.json:/etc/rabbitmq/definitions.json:ro
+    networks:
+      - rede-pos
+
+  eureka-server:
+    container_name: EUREKA-SERVER
+    image: gladsondevop/eureka:latest
+    ports:
+      - "8761:8761"
+    networks:
+      - rede-pos
+
+  config-server:
+    image: gladsondevop/configserver
+    container_name: CONFIG-SERVER
+    networks:
+      - rede-pos
+#    healthcheck:
+#      test: ["CMD", "curl", "-f" , "http://localhost:8888/actuator/health"]
+#      interval: 30s
+#      timeout: 2s
+#      retries: 3
+    environment:
+      - GITHUB_CONFIG_PASSWORD=
+    depends_on:
+      - eureka-server
+
+  consulta-service:
+    image: gladsondevop/consulta:latest
+    networks:
+      - rede-pos
+    depends_on:
+      - config-server
+      - eureka-server
+#    depends_on:
+#      config-server:
+#        condition: service_healthy
+
+  paciente-service:
+    image: gladsondevop/paciente:latest
+    networks:
+      - rede-pos
+    depends_on:
+      - eureka-server
+
+  medico-service:
+    image: gladsondevop/medico:latest
+    networks:
+      - rede-pos
+    depends_on:
+      - eureka-server
+
+#  nota-fiscal-service:
+#    image: gladsondevop/nota-fiscal:latest
+#      #build:
+#    # context: /Users/leonardogloria/infnet/pos-graduacao/ms-noite/cervejaria/nota-fiscal/docker
+#    # dockerfile: .
+#    networks:
+#      - rede-pos
+#    depends_on:
+#      - eureka-server
+#      - rabbitmq
+
+  gateway-service:
+    image: gladsondevop/gateway:latest
+    networks:
+      - rede-pos
+    depends_on:
+      - eureka-server
+    ports:
+      - "9999:9999"
+
