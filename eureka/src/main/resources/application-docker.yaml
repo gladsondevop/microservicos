@@ -1,13 +1,11 @@
 spring:
   application:
     name: eureka
-  profiles:
-    active: docker
 server:
   port: 8761
 eureka:
   instance:
-    hostname: localhost
+    hostname: EUREKA-SERVER
   client:
     registerWithEureka: false
     fetchRegistry: false

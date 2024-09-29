@@ -1,7 +1,8 @@
-version: '3.0'
+version: '2.2'
 networks:
   rede-pos:
     driver: bridge
+
 services:
   rabbitmq:
     image: rabbitmq:3.13-management
@@ -28,11 +29,11 @@ services:
     container_name: CONFIG-SERVER
     networks:
       - rede-pos
-#    healthcheck:
-#      test: ["CMD", "curl", "-f" , "http://localhost:8888/actuator/health"]
-#      interval: 30s
-#      timeout: 2s
-#      retries: 3
+    healthcheck:
+      test: ["CMD", "curl", "-f" , "http://localhost:8888/actuator/health"]
+      interval: 30s
+      timeout: 2s
+      retries: 3
     environment:
       - GITHUB_CONFIG_PASSWORD=
     depends_on:
@@ -42,12 +43,12 @@ services:
     image: gladsondevop/consulta:latest
     networks:
       - rede-pos
-    depends_on:
-      - config-server
-      - eureka-server
 #    depends_on:
-#      config-server:
-#        condition: service_healthy
+#      - config-server
+#      - eureka-server
+    depends_on:
+      config-server:
+        condition: service_healthy
 
   paciente-service:
     image: gladsondevop/paciente:latest
@@ -63,16 +64,16 @@ services:
     depends_on:
       - eureka-server
 
-#  nota-fiscal-service:
-#    image: gladsondevop/nota-fiscal:latest
-#      #build:
-#    # context: /Users/leonardogloria/infnet/pos-graduacao/ms-noite/cervejaria/nota-fiscal/docker
-#    # dockerfile: .
-#    networks:
-#      - rede-pos
-#    depends_on:
-#      - eureka-server
-#      - rabbitmq
+  nota-fiscal-service:
+    image: gladsondevop/nota-fiscal
+#    build:
+#      context: /home/gladsondevop/Desenvolvimento/posGraduacao/microservice/nota-fiscal/docker
+#      dockerfile: .
+    networks:
+      - rede-pos
+    depends_on:
+      - eureka-server
+      - rabbitmq
 
   gateway-service:
     image: gladsondevop/gateway:latest
