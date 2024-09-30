@@ -35,7 +35,7 @@ services:
       timeout: 2s
       retries: 3
     environment:
-      - GITHUB_CONFIG_PASSWORD=<hash-git>
+      - GITHUB_CONFIG_PASSWORD=
     depends_on:
       - eureka-server
 
